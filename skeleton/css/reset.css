@@ -1,0 +1,22 @@
+html, h1, body, figure, ul, li, h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  text-decoration: inherit;
+  text-align: inherit;
+  font: inherit;
+  color: inherit;
+
+  background: transparent;
+}
+
+ul {
+  list-style: none;
+}
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}

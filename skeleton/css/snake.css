@@ -1,0 +1,87 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 30px;
+  font-size: 60px;
+  font-weight: 700;
+  overflow: hidden;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.snake-grid {
+  margin: 0 auto;
+  border: 3px solid black;
+  width: 480px;
+  height: 480px;
+  background: #c5bd09;
+}
+
+.snake-grid > li {
+  float: left;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 3px solid black;
+  cursor: pointer;
+  line-height: 83px;
+}
+
+.snake-body {
+  background: #014c00;
+}
+
+.apple {
+  background: red;
+}
+
+.snake-game {
+  position: relative;
+}
+
+.button-choices button {
+  margin: 20px;
+  padding: 13px;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 10px;
+  color: #fff;
+  background: #3EABA9;
+  box-shadow: 1px 1px 5px #11b09c;
+  opacity: 0.7
+}
+
+.button-choices {
+  padding: 20px;
+  width: 120px;
+  position: absolute;
+  left: 80px;
+  top: 150px;
+}
+
+.botton-choices > botton {
+  /*display: block;*/
+  float: left;
+  margin
+}
+
+
+.button-choices button:active {
+  top: 3px;
+  box-shadow: none;
+  opacity: 1;
+}
+
+.button-choices button:hover {
+  opacity: 1;
+}
+
+.snake-game h2 {
+  font-size: 40px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 80px;
+}
