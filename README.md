@@ -1,5 +1,9 @@
 ## jQuery Snake
 
+[Play Now][live]
+
+[live]: https://chiaowenlin075.github.io/Snake
+
 ### Languages:
 - Javascript
 - jQuery
