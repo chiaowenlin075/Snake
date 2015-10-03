@@ -3,15 +3,16 @@
 
   var Snake = window.Snakes.Snake = function() {
     this.dir = "S";
+    this.canTurn = true;
     this.segments = [];
     this.putSnake();
   };
 
   Snake.DIRS = {
-    "W": [ 0,-1], // new Snakes.Coord( 0,-1);
-    "S": [ 1, 0], // new Snakes.Coord( 1, 0);
-    "E": [ 0, 1], // new Snakes.Coord( 0, 1);
-    "N": [-1, 0]  // new Snakes.Coord(-1, 0);
+    "W": [ 0,-1],
+    "S": [ 1, 0],
+    "E": [ 0, 1],
+    "N": [-1, 0]
   };
 
   Snake.prototype.putSnake = function(){
@@ -21,33 +22,49 @@
     };
   };
 
+  Snake.prototype.head = function(){
+    return _.first(this.segments);
+  };
+
+  Snake.prototype.tail = function(){
+    return _.last(this.segments);
+  };
+
+  Snake.prototype.nextPos = function(){
+    return this.head().plus(Snake.DIRS[this.dir]);
+  };
+
   Snake.prototype.move = function(){
     var notHeadPart = this.segments.slice(0, this.segments.length - 1);
-    var newHead = this.segments[0].plus(Snake.DIRS[this.dir]);
+    var newHead = this.nextPos();
     this.segments = [newHead].concat(notHeadPart);
+    this.canTurn = true;
+  };
+
+  Snake.prototype.validTurn = function(dir){
+    NorS = ["N", "S"];
+    EorW = ["E", "W"];
+    return !(NorS.indexOf(dir) !== -1 && NorS.indexOf(this.dir) !== -1) &&
+            !(EorW.indexOf(dir) !== -1 && EorW.indexOf(this.dir) !== -1)
   };
 
   Snake.prototype.turn = function(dir){
-    this.dir = dir;
+    if (this.validTurn(dir)) {
+      this.dir = dir;
+    };
   };
 
   Snake.prototype.eatSelf = function(){
-    var head = this.segments[0];
-    for (var i = 1; i < this.segments.length; i++){
-      if(head.equals(this.segments[i])) {
-        return true
-      };
-    };
-    return false;
+    return Snakes.Coord.include(_.rest(this.segments), this.head());
   };
 
   Snake.prototype.allPos = function(){
-    var pos = [];
-    this.segments.forEach(function(el){
-      pos.push([el.row, el.col]);
-    })
+    return Snakes.Coord.toPos(this.segments);
+  };
 
-    return pos;
+  Snake.prototype.tailDir = function(){
+    var lastTwoSeg = _.rest(this.segments, this.segments.length - 2);
+    return Snakes.Coord.getDir(lastTwoSeg[0], lastTwoSeg[1]);
   };
 
 })();

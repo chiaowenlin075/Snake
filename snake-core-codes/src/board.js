@@ -1,14 +1,14 @@
 (function() {
   window.Snakes = window.Snakes || {};
 
-  var Board = window.Snakes.Board = function(size, speed){
-    this.size = size;
-    this.speed = speed;
+  var Board = window.Snakes.Board = function(numRows, numCols, speed){
+    this.numRows = numRows;
+    this.numCols = numCols;
+    this.speed = null;
     this.snake = new window.Snakes.Snake();
     this.apple = new Snakes.Coord(5, 6);
     this.grid = this.makeGrid();
-    this.placeSnake();
-    this.bindKeys();
+    this.placePieces();
     this.score = 0;
   };
 
@@ -16,36 +16,42 @@
 
   Board.prototype.makeGrid = function(){
     var grid = [];
-    for(var i = 0; i < this.size; i++){
-      grid.push(new Array(this.size));
+    for(var i = 0; i < this.numRows; i++){
+      grid.push(new Array(this.numCols));
     };
 
     return grid;
   };
 
-  Board.prototype.placeSnake = function(){
-    this.snake.segments.forEach(function(coord){
-      this.grid[coord.row][coord.col] = "S";
-    }.bind(this));
+  Board.prototype.getPiece = function(pos){
+    return this.grid[pos[0]][pos[1]]
   };
 
+  Board.prototype.putPiece = function(pos, piece){
+    this.grid[pos[0]][pos[1]] = piece;
+  };
+
+  Board.prototype.empty = function(coord){
+    return this.inBoard(coord) &&
+            !Snakes.Coord.include(this.snake.segments, coord) &&
+            !this.apple.equals(coord)
+  };
 
   Board.prototype.move = function(){
     var intervalId = setInterval(function(){
       this.snake.move();
       this.eatApple();
-      if (!this.onBoard() || this.snake.eatSelf()) {
+      if (!this.inBoard(this.snake.segments[0]) || this.snake.eatSelf()) {
         console.log("Oops, You died :(");
         clearInterval(intervalId);
       } else {
         this.grid = this.makeGrid();
-        this.placeSnake();
-        this.placeApple();
+        this.placePieces();
         this.render();
       }
     }.bind(this), this.speed * 1000);
   };
-
+  
   Board.prototype.render = function(){
     for (var i = 0; i < this.size; i++){
       var row = "row: " + i;
@@ -61,32 +67,41 @@
     console.log();
   };
 
-  Board.prototype.onBoard = function() {
-    var head = this.snake.segments[0];
-    return head.row >= 0 && head.row < this.size && head.col >= 0 && head.col < this.size;
-  };
-
-  Board.prototype.bindKeys = function() {
-    key('up', function() { this.snake.turn("N") }.bind(this));
-    key('down', function() { this.snake.turn("S") }.bind(this));
-    key('left', function() { this.snake.turn("W") }.bind(this));
-    key('right', function() { this.snake.turn("E") }.bind(this));
+  Board.prototype.inBoard = function(coord) {
+    return coord.row >= 0 && coord.row < this.numRows &&
+            coord.col >= 0 && coord.col < this.numCols;
   };
 
   Board.prototype.eatApple = function(){
-    var head = this.snake.segments[0];
-    if (head.equals(this.apple)) {
-      this.score += Board.APPLESCORE;
-      var snakeLength = this.snake.segments.length;
-      var lastSeg = this.snake.segments[snakeLength - 1];
-      var secToLastSeg = this.snake.segments[snakeLength - 2];
-      this.snake.segments.push(Snakes.Coord.backwardCoord(secToLastSeg, lastSeg));
-      this.apple = Snakes.Coord.randomCoord(this.size, this.size);
-    };
+    var head = _.first(this.snake.segments);
+    if (head.equals(this.apple)) { return true };
+    return false;
+  };
+
+  Board.prototype.placeSnake = function(){
+    this.snake.segments.forEach(function(coord){
+      this.putPiece(coord.pos, coord);
+    }.bind(this));
   };
 
   Board.prototype.placeApple = function(){
-    this.grid[this.apple.row][this.apple.col] = "A";
+    this.putPiece(this.apple.pos, this.apple);
+  };
+
+  Board.prototype.generateApple = function(){
+    if (this.eatApple()){
+      this.score += Board.APPLESCORE;
+      this.snake.segments.push(Snakes.Coord.backwardCoord(this.snake.segments));
+      this.apple = Snakes.Coord.randomCoord(this);
+      return true;
+    };
+    return false;
+  };
+
+  Board.prototype.placePieces = function(){
+    this.generateApple();
+    this.placeSnake();
+    this.placeApple();
   };
 
 })();
