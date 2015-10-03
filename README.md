@@ -1,4 +1,14 @@
-<h1>jQuery Snake</h1>
-A playable browser Snake game based on simple core game code worked with Aiven Song.
+## jQuery Snake
 
-Download the file and open the 'index.html' file in skeleton/html directory!
+### Languages:
+- Javascript
+- jQuery
+- CSS
+
+### Highlight:
+- Applies jQuery to handle user input and manage DOM elements’ styling
+- Designs snake and apple with pure CSS
+
+### What can you do?
+- Play with three different speed!
+- Try to get your best score, go!

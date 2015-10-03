@@ -99,13 +99,13 @@
   View.prototype.speedOptionButton = function(){
     var $fastOption = $("<button>").text("Master")
                                    .addClass("speed-fast speed-option")
-                                   .data("speed", 0.08);
+                                   .data("speed", 0.07);
     var $normalOption = $("<button>").text("Regular")
                                      .addClass("speed-normal speed-option")
-                                     .data("speed", 0.12);
+                                     .data("speed", 0.13);
     var $slowOption = $("<button>").text("Beginner")
                                    .addClass("speed-slow speed-option")
-                                   .data("speed", 0.5);
+                                   .data("speed", 0.4);
     var $buttonDiv = $("<div class='speed-choices group'>");
     $buttonDiv.append($fastOption, $normalOption, $slowOption);
     this.$snakeContent.prepend($buttonDiv);
