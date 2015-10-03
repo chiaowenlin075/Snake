@@ -2,9 +2,10 @@
 (function() {
   window.Snakes = window.Snakes || {};
 
-  var Board = window.Snakes.Board = function(size, speed){
-    this.size = size;
-    this.speed = speed;
+  var Board = window.Snakes.Board = function(numRows, numCols, speed){
+    this.numRows = numRows;
+    this.numCols = numCols;
+    this.speed = null;
     this.snake = new window.Snakes.Snake();
     this.apple = new Snakes.Coord(5, 6);
     this.grid = this.makeGrid();
@@ -16,8 +17,8 @@
 
   Board.prototype.makeGrid = function(){
     var grid = [];
-    for(var i = 0; i < this.size; i++){
-      grid.push(new Array(this.size));
+    for(var i = 0; i < this.numRows; i++){
+      grid.push(new Array(this.numCols));
     };
 
     return grid;
@@ -31,8 +32,10 @@
     this.grid[pos[0]][pos[1]] = piece;
   };
 
-  Board.prototype.empty = function(pos){
-    return typeof this.getPiece(pos) === 'undefined';
+  Board.prototype.empty = function(coord){
+    return this.inBoard(coord) &&
+            !Snakes.Coord.include(this.snake.segments, coord) &&
+            !this.apple.equals(coord)
   };
 
   Board.prototype.move = function(){
@@ -49,7 +52,7 @@
       }
     }.bind(this), this.speed * 1000);
   };
-
+  
   Board.prototype.render = function(){
     for (var i = 0; i < this.size; i++){
       var row = "row: " + i;
@@ -66,8 +69,8 @@
   };
 
   Board.prototype.inBoard = function(coord) {
-    return coord.row >= 0 && coord.row < this.size &&
-            coord.col >= 0 && coord.col < this.size;
+    return coord.row >= 0 && coord.row < this.numRows &&
+            coord.col >= 0 && coord.col < this.numCols;
   };
 
   Board.prototype.eatApple = function(){
@@ -91,7 +94,9 @@
       this.score += Board.APPLESCORE;
       this.snake.segments.push(Snakes.Coord.backwardCoord(this.snake.segments));
       this.apple = Snakes.Coord.randomCoord(this);
+      return true;
     };
+    return false;
   };
 
   Board.prototype.placePieces = function(){
@@ -123,7 +128,7 @@
     Coord.randomCoord = function(board){
       var newCoord;
       do {
-        newCoord = new Coord(Coord.randomPos(board.size), Coord.randomPos(board.size));
+        newCoord = new Coord(Coord.randomPos(board.numRows), Coord.randomPos(board.numCols));
       } while (Coord.include(board.snake.segments, newCoord));
 
       return newCoord;
@@ -150,6 +155,37 @@
         if (coordAry[i].equals(otherCoord)) { return true; };
       };
       return false;
+    };
+
+    Coord.prototype.neighbors = function(board){
+      var that = this, neighborsAry = [], checkCoord;
+      [-1, 0, 1].forEach(function(deltaRow){
+        [-1, 0, 1].forEach(function(deltaCol){
+          checkCoord = that.plus([deltaRow, deltaCol]);
+          if (!checkCoord.equals(that) &&
+                board.empty(checkCoord) &&
+                !Coord.include(neighborsAry, checkCoord)){
+            neighborsAry.push(checkCoord);
+          };
+        })
+      });
+      return Coord.toPos(neighborsAry);
+    };
+
+    Coord.toPos = function(coordAry){
+      return coordAry.map(function(coord){
+        return coord.pos;
+      });
+    };
+
+    Coord.getDir = function(coord1, coord2){
+      if (coord1.row === coord2.row) {
+        var colIncrement = coord2.col - coord1.col;
+        return colIncrement > 0 ? "W" : "E";
+      } else {
+        var rowIncrement = coord2.row - coord1.row;
+        return rowIncrement > 0 ? "N" : "S";
+      };
     };
 
 })();
@@ -179,14 +215,23 @@
     };
   };
 
+  Snake.prototype.head = function(){
+    return _.first(this.segments);
+  };
+
+  Snake.prototype.tail = function(){
+    return _.last(this.segments);
+  };
+
   Snake.prototype.nextPos = function(){
-    return this.segments[0].plus(Snake.DIRS[this.dir]);
+    return this.head().plus(Snake.DIRS[this.dir]);
   };
 
   Snake.prototype.move = function(){
     var notHeadPart = this.segments.slice(0, this.segments.length - 1);
     var newHead = this.nextPos();
     this.segments = [newHead].concat(notHeadPart);
+    this.canTurn = true;
   };
 
   Snake.prototype.validTurn = function(dir){
@@ -200,19 +245,21 @@
     if (this.validTurn(dir)) {
       this.dir = dir;
     };
-    this.canTurn = true;
   };
 
   Snake.prototype.eatSelf = function(){
-    return Snakes.Coord.include(_.rest(this.segments), _.first(this.segments));
+    return Snakes.Coord.include(_.rest(this.segments), this.head());
   };
 
   Snake.prototype.allPos = function(){
-    return this.segments.map(function(coord){
-      return coord.pos;
-    });
+    return Snakes.Coord.toPos(this.segments);
+  };
+
+  Snake.prototype.tailDir = function(){
+    var lastTwoSeg = _.rest(this.segments, this.segments.length - 2);
+    return Snakes.Coord.getDir(lastTwoSeg[0], lastTwoSeg[1]);
   };
 
 })();
 
-},{}]},{},[1,3,2]);
+},{}]},{},[3,1,2]);

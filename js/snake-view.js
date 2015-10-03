@@ -29,7 +29,7 @@
     var $highScore = $("<h3 class='highest-score'>");
     $highScore.text("Your highest score: " + this.highestScore);
     $highScore.insertBefore(this.$snakeContent);
-    var $introMsg = $("<p class='intro-msg'>").text("Use Arrow Key to Move!");
+    var $introMsg = $("<h3 class='intro-msg'>").text("Use Arrow Key to Move!");
     this.$el.append($introMsg);
     setTimeout(function(){
       this.$el.find(".intro-msg").remove();

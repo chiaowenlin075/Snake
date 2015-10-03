@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Snakes</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/snake.css">
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic|Averia+Sans+Libre' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/underscore.js"></script>
+    <!-- Whackjobs at GithubPages don't understand symlinks... -->
+    <script src="snake-core-codes/snake-core.js"></script>
+    <script src="js/snake-view.js"></script>
+
+    <section id="snake-game">
+      <h1>Snake</h1>
+      <div class="snake-content"></div>
+    </section>
+
+    <script>
+    (function(){
+      var game = new Snakes.View(new Snakes.Board(12, 16), $("#snake-game"));
+    })();
+    </script>
+  </body>
+</html>
