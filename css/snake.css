@@ -117,6 +117,8 @@ i.close-snake {
   padding: 20px;
   width: 120px;
   float: left;
+  z-index: 5;
+  position: absolute;
 }
 
 .speed-choices button:active, .play-again {
