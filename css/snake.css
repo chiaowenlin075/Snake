@@ -117,6 +117,11 @@ i.close-snake {
   padding: 20px;
   width: 120px;
   float: left;
+<<<<<<< HEAD
+=======
+  z-index: 5;
+  position: absolute;
+>>>>>>> master
 }
 
 .speed-choices button:active, .play-again {
@@ -244,5 +249,9 @@ i.close-snake {
 
 .snake-tail {
   border-bottom-left-radius: 130%;
+<<<<<<< HEAD
   border-bottom-right-radius: 130%; 
+=======
+  border-bottom-right-radius: 130%;
+>>>>>>> master
 }
