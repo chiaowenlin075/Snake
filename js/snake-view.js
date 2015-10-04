@@ -102,17 +102,14 @@
                                    .data("speed", 0.07);
     var $normalOption = $("<button>").text("Regular")
                                      .addClass("speed-normal speed-option")
-<<<<<<< HEAD
                                      .data("speed", 0.12);
     var $slowOption = $("<button>").text("Beginner")
                                    .addClass("speed-slow speed-option")
                                    .data("speed", 0.18);
-=======
                                      .data("speed", 0.13);
     var $slowOption = $("<button>").text("Beginner")
                                    .addClass("speed-slow speed-option")
                                    .data("speed", 0.4);
->>>>>>> master
     var $buttonDiv = $("<div class='speed-choices group'>");
     $buttonDiv.append($fastOption, $normalOption, $slowOption);
     this.$snakeContent.prepend($buttonDiv);
