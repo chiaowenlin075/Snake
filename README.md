@@ -12,14 +12,14 @@
 - CSS
 - HTML
 
-### Highlight:
+### Highlights:
 - Applies jQuery to handle user input and manage DOM elements’ styling
 - Designs snake and apple with pure CSS
-  - Apple is made up by two block with symmetric border radius
-  - The leave of apple is made up by a rotate block with border radius
-  - Snaks's tongue is made up by :after pseudo selector with content "Y"
+  - Apple is made up by two blocks with symmetric border radius
+  - The leaf of apple is made up by a rotate block with border radius
+  - Snake's tongue is made up by :after pseudo selector with content "Y"
 
 ### How to play?
 - Use arrow key to move
-- Play with three different speed!
+- Play with three different speeds!
 - Try to get your best score, go!
