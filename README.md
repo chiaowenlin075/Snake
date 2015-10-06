@@ -1,9 +1,6 @@
 ## jQuery Snake
 
-<<<<<<< HEAD
-=======
 [Play Now][live]
-
 [live]: https://chiaowenlin075.github.io/Snake
 
 ### Languages:
