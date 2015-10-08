@@ -75,7 +75,7 @@
         clearInterval(intervalId);
       } else {
         this.render();
-        this.renderEffect();
+        // this.renderEffect();
       }
     }.bind(this), this.board.speed);
   };
